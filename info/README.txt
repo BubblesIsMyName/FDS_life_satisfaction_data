@@ -1,0 +1,1 @@
+LiTS III - Questionnaire.pdf - is the questionaire that was used for the data that can be found in the FDS_life_satisfaction_data/data/LiTS_III_2016.csv
