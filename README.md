@@ -14,3 +14,6 @@ The latest LiTS polled over 51,000 households across central and eastern Europe,
 
 **04/03/21**
 @kgalsworthy converted the 2016 dataset to .csv format. And we are setting up the project.
+
+**05/03/21**
+@kgalsworthy drafted life satisfaction replication.
