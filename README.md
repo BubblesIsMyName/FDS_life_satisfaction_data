@@ -10,10 +10,3 @@ The latest LiTS polled over 51,000 households across central and eastern Europe,
  * Try to find some other explanations for them based on the data (e.g., respondents’ age, employment, income etc.). 
 * The datasets from 2006 and 2010 are also available and so changes over time could also be looked at.
 
-## WIP update
-
-**04/03/21**
-@kgalsworthy converted the 2016 dataset to .csv format. And we are setting up the project.
-
-**05/03/21**
-@kgalsworthy drafted life satisfaction replication.
