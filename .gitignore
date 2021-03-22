@@ -1,2 +1,5 @@
 # Ignore the extracted csv data.
-/data/LiTS_III_2016.csv
+data/LiTS_III_2016.csv
+# Ignore generated folder - Bubbles
+__pycache__/
+.vscode/
