@@ -134,11 +134,9 @@ def ussr_recoder(country):
 
     return in_ussr
 
-
-# Define a function that will calculate the survey-weighted life satisfaction level for each country or a group of countries.
+# # Define a function that will calculate the survey-weighted life satisfaction level for each country or a group of countries.
 def calc_mean_percentage(countries, df, measure, exclusions, criteria):
-    """ Return the mean percentage of respondents in given countries who fulfilled certain criteria on a given measure.
-    
+    """
     Paramaters
     ----------
     countries : array
@@ -151,26 +149,15 @@ def calc_mean_percentage(countries, df, measure, exclusions, criteria):
         Values of the measure of interest that are excluded from further analysis.
     criteria: array
         Values of the measure of interest that are included for calculating the mean percentage.
-    
     Returns
     -------
     mean_percentage : number
         The mean percentage of respondents in given countries who fulfilled certain criteria on a given measure.
-    
     """
-    
-    df_overall = df.copy()
-    
     # Clean the dataframe by removing rows with the excluded values in the measure column.
-    for i in np.arange(len(exclusions)):
-        indices = df_overall[df_overall[measure] == exclusions[i]].index
-        df_overall = df_overall.drop(indices)
-    
+    df_overall = exclude_values(df, measure, exclusions)
     # Create a new dataframe that contains only those rows that passed the criteria on the measure column.
-    df_select = pd.DataFrame()
-    
-    for j in np.arange(len(criteria)):
-        df_select = df_select.append(df_overall.copy()[df_overall[measure] == criteria[j]])
+    df_select = include_values(df, measure, criteria)
     
     # If a string was passed to countries, convert it into an array.
     if type(countries) == np.str:
@@ -178,10 +165,27 @@ def calc_mean_percentage(countries, df, measure, exclusions, criteria):
     
     # Calculate the mean percentage(s).
     percentages = np.zeros(len(countries))
-
     for k in np.arange(len(countries)):
         percentages[k] = np.sum(df_select[df_select['Country'] == countries[k]]['Weight 1']) / np.sum(df_overall[df_overall['Country'] == countries[k]]['Weight 1']) * 100
     
     mean_percentage = np.sum(percentages) / len(percentages)
     
     return mean_percentage
+
+def exclude_values(df, measure, exclusions):
+    # Clean the dataframe by removing rows with the excluded values in the measure column.
+    df_overall = df.copy()
+    for i in np.arange(len(exclusions)):
+        indices = df[df[measure] == exclusions[i]].index
+        df_overall = df_overall.drop(indices)
+    return df_overall
+
+def include_values(df, measure, criteria):
+    # Create a new dataframe that contains only those rows that passed the criteria on the measure column.
+    df_select = pd.DataFrame()
+    for j in np.arange(len(criteria)):
+        df_select = df_select.append(df[df[measure] == criteria[j]])
+    return df_select
+
+def standard_units(x):
+    return (x - np.mean(x))/np.std(x)
