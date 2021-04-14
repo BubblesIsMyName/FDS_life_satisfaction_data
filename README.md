@@ -4,7 +4,7 @@ Project Background: The European Bank for Reconstruction and Development (EBRD) 
 
 The latest LiTS polled over 51,000 households across central and eastern Europe, as well as some western European countries for comparison. A couple of interesting findings were that most respondents in most polled countries said that authoritarian government is sometimes preferable to democracy, and that life satisfaction in many of these countries was relatively low (see https://www.theguardian.com/world/2016/dec/14/unhappy-russians-nostalgic-for-soviet-style-rule-study).
 
-## Poposed Aims of the porject
+## Poposed Aims of the project
 
 * Replicate the findings in the guardian article. proposing a disposition to different styles of goverment.
  * Try to find some other explanations for them based on the data (e.g., respondents’ age, employment, income etc.). 
