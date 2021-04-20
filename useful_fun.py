@@ -172,13 +172,33 @@ def calc_mean_percentage(countries, df, measure, exclusions, criteria):
     
     return mean_percentage
 
+# def exclude_values(df, measure, exclusions):
+#     # Clean the dataframe by removing rows with the excluded values in the measure column.
+#     df_overall = df.copy()
+#     for i in np.arange(len(exclusions)):
+#         indices = df[df[measure] == exclusions[i]].index
+#         df_overall = df_overall.drop(indices)
+#     return df_overall
+
+
 def exclude_values(df, measure, exclusions):
     # Clean the dataframe by removing rows with the excluded values in the measure column.
     df_overall = df.copy()
-    for i in np.arange(len(exclusions)):
-        indices = df[df[measure] == exclusions[i]].index
-        df_overall = df_overall.drop(indices)
+
+    # if more than one meassure is passed in.
+    if len(measure) > 0:
+        for elem in measure:
+            for i in np.arange(len(exclusions)):
+                indices = df_overall[df_overall[elem] == exclusions[i]].index
+                df_overall = df_overall.drop(indices)
+    # if there is only one measure.
+    else:
+        for i in np.arange(len(exclusions)):
+            indices = df[df[measure] == exclusions[i]].index
+            df_overall = df_overall.drop(indices)
+    
     return df_overall
+
 
 def include_values(df, measure, criteria):
     # Create a new dataframe that contains only those rows that passed the criteria on the measure column.
@@ -189,3 +209,79 @@ def include_values(df, measure, criteria):
 
 def standard_units(x):
     return (x - np.mean(x))/np.std(x)
+
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Functions used for k-NN classifier implementation
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+# I'm using slightly modded versions of the functions from class exercises
+
+# def distance(pt1, pt2):
+# """The distance between two points, represented as arrays."""
+# return np.sqrt(sum((pt1 - pt2) ** 2))
+
+def distances(training, example, output):
+    """Compute the distance from example for each row in training."""
+
+    training_drop_output = training.drop(columns=output)
+    example_drop_output = example.drop(index=output)
+
+    out = training.copy()
+    out['Distance'] = fast_distances(example_drop_output,training_drop_output)
+
+    return out
+
+def fast_distances(test_row, train_rows):
+    """Array of distances between `test_row` and each row in `train_rows`.
+
+    Parameters
+    ----------
+    test_row: attribute series / array
+        A row of a table containing features of one test song (e.g.,
+        test_20.iloc[0]).
+    train_rows: data frame
+        A table of features (for example, the whole table train_20).
+
+    Returns
+    -------
+    distances : array
+        One distance per row in `train_rows`.
+    """
+    # assert train_rows.shape[1] < 50, "Make sure you're not using all the features of the lyrics table."
+    # Convert the test row to an array of floating point values.
+    test_row = np.array(test_row).astype(np.float64)
+    # Convert the training attributes data frame to an array of floating point
+    # values.
+    train_attrs = np.array(train_rows).astype(np.float64)
+    # Make an array of the same shape as `train_attrs` by repeating the
+    # `test_row` len(train_rows) times.
+    repeated_test_row = np.tile(test_row, [len(train_rows), 1])
+    # Now we can do the subtractions all at once.
+    diff = repeated_test_row - train_attrs
+    distances = np.sqrt(np.sum(diff ** 2, axis=1))
+    return distances
+
+def closest(training, example, k, output):
+    """Return a table of the k closest neighbors to example."""
+    dist_df = distances(training, example, output)
+    return dist_df.sort_values('Distance').head(k)
+
+def predict_nn(example):
+    """Return average of the price across the 5 nearest neighbors.
+    """
+    k_nearest = closest(sel_train_feat, example, 5, 'Political System')
+
+    result = np.median(k_nearest['Political System'])
+
+    return result
+
+def predict_nn(example, training, k, output):
+    """Return average of the price across the 5 nearest neighbors.
+    """
+    k_nearest = closest(training, example, k, output)
+
+    result = np.median(k_nearest[output])
+
+    return result
