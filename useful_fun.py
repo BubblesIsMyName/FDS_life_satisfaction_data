@@ -218,10 +218,6 @@ def standard_units(x):
 
 # I'm using slightly modded versions of the functions from class exercises
 
-# def distance(pt1, pt2):
-# """The distance between two points, represented as arrays."""
-# return np.sqrt(sum((pt1 - pt2) ** 2))
-
 def distances(training, example, output):
     """Compute the distance from example for each row in training."""
 
@@ -249,14 +245,12 @@ def fast_distances(test_row, train_rows):
     distances : array
         One distance per row in `train_rows`.
     """
-    # assert train_rows.shape[1] < 50, "Make sure you're not using all the features of the lyrics table."
     # Convert the test row to an array of floating point values.
     test_row = np.array(test_row).astype(np.float64)
     # Convert the training attributes data frame to an array of floating point
     # values.
     train_attrs = np.array(train_rows).astype(np.float64)
     # Make an array of the same shape as `train_attrs` by repeating the
-    # `test_row` len(train_rows) times.
     repeated_test_row = np.tile(test_row, [len(train_rows), 1])
     # Now we can do the subtractions all at once.
     diff = repeated_test_row - train_attrs
@@ -268,20 +262,99 @@ def closest(training, example, k, output):
     dist_df = distances(training, example, output)
     return dist_df.sort_values('Distance').head(k)
 
-def predict_nn(example):
-    """Return average of the price across the 5 nearest neighbors.
-    """
-    k_nearest = closest(sel_train_feat, example, 5, 'Political System')
 
-    result = np.median(k_nearest['Political System'])
+# def predict_nn(example, training, k, output):
+#     """Return average of the price across the 5 nearest neighbors.
+#     """
+#     k_nearest = closest(training, example, k, output)
 
-    return result
+#     print(k_nearest)
+#     result = np.median(k_nearest[output])
+
+#     return result
+
 
 def predict_nn(example, training, k, output):
     """Return average of the price across the 5 nearest neighbors.
     """
     k_nearest = closest(training, example, k, output)
 
-    result = np.median(k_nearest[output])
+    # result = np.median(k_nearest[output])
+
+    result = k_nearest[output].value_counts().index[0]
 
     return result
+
+
+def calculate_accuracy(resultsDF,Output):
+    """
+    Function calculates and prints class and total accuracy given the dataframe
+    and the output class column
+    """
+    # Create a column, that indicates if the guess was correct
+    resultsDF['Correct'] = resultsDF['Guesses'] == resultsDF[Output]
+    
+
+    # Count correct, incorrect guesses per class
+    accuracy = resultsDF.value_counts(['Guesses', 'Correct'])
+    
+    # For each class print the achieved accuaracy
+    cat = np.unique(resultsDF[Output])
+    for value in cat:
+        # Calculate accuracy fot this class
+        achieved_accuracy =  (accuracy[value][True]/accuracy[value].sum())*100
+        print('{} - {:2.2f}%:'.format(value,achieved_accuracy))
+
+    # Calculate and print total accuracy
+    accuracy = resultsDF.value_counts('Correct')
+    achieved_accuracy =  (accuracy[True]/accuracy.sum())*100
+    print('\nTotal Accuracy - {:2.2f}%:'.format(achieved_accuracy))
+
+
+def train_test_valid(dataframe,train_prop = 7/10 ,valid_prop = 1/10):
+    """
+    Function splits the dataset into training, validation and tests sets and retruns dataframes for each set.
+    """
+    participants = len(dataframe)
+    num_train = int(round(participants * train_prop))
+    num_valid = int(round(participants * (train_prop+valid_prop)))
+
+    # Shuffle the dataframe
+    dataframe = dataframe.sample(frac=1,replace=False)
+
+    # Assign parts of the shuffled dataframe to training and test sets
+    train = dataframe.iloc[:num_train,:].copy()
+    valid = dataframe.iloc[num_train:num_valid,:].copy()
+    test= dataframe.iloc[num_valid:,:].copy()
+
+    print("Training set:\t", len(train), "examples")
+    print("Valid set:\t", len(valid), "examples")
+    print("Test set:\t", len(test), "examples")
+    return train, test, valid
+
+
+def balance_df(dataframe,Output,bootstrap = False):
+    """
+    Passing in the dataframe and the output category, returns a dataframe with a 
+    balanced number of output clases
+    """
+    categories = np.unique(dataframe[Output]) # the unique classes
+
+    balancedDf = pd.DataFrame()
+    if bootstrap == False:
+        # Find the maximum number of rows without replacement
+        max_len = dataframe[Output].value_counts(ascending=True)[0]
+
+        for cat in categories:
+            df = dataframe[dataframe[Output]==cat].copy()
+            df = df.sample(frac=1,replace=False).iloc[:max_len,:]
+            balancedDf = pd.concat([balancedDf,df])
+    else:
+        # Find the maximum number of rows with replacement
+        max_len = dataframe[Output].value_counts()[0]
+
+        for cat in categories:
+            df = dataframe[dataframe[Output]==cat].copy()
+            df = df.sample(frac=2,replace=True).iloc[:max_len,:]
+            balancedDf = pd.concat([balancedDf,df])
+    return balancedDf
