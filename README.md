@@ -1,15 +1,14 @@
-# Life satisfaction and political views in the ex-Soviet bloc
+# Life Satisfaction and Political Views in Eastern Bloc Versus Western Europe
 
-Project Background: The European Bank for Reconstruction and Development (EBRD) was formed following the collapse of the Soviet Union in 1991 to invest in projects that promote open market economies in these former communist countries. The EBRD has carried out three **Life in Transition Surveys (LiTS)** in 2006, 2010, and 2016 to gauge progress and barriers to this goal by asking people in these countries about various aspects of their lives, values, and perceptions. More information here: https://www.ebrd.com/what-we-do/economic-research-and-data/data/lits.html. 
+Project Background: The European Bank for Reconstruction and Development (EBRD) was formed following the collapse of the Soviet Union in 1991 to invest in projects that promote open market economies in these former communist countries. The EBRD has carried out three **Life in Transition Surveys (LiTS)** in 2006, 2010, and 2016 to gauge progress and barriers to this goal by asking people in these countries about various aspects of their lives, values, and perceptions. More information here: https://www.ebrd.com/what-we-do/economic-research-and-data/data/lits.html.
 
-The latest LiTS polled over 51,000 households across central and eastern Europe, as well as some western European countries for comparison. A couple of interesting findings were that most respondents in most polled countries said that authoritarian government is sometimes preferable to democracy, and that life satisfaction in many of these countries was relatively low (see https://www.theguardian.com/world/2016/dec/14/unhappy-russians-nostalgic-for-soviet-style-rule-study).
+Our project aims to replicate part of their results and extend them in relation to life satisfaction and political views.
 
-## Poposed Aims of the porject
+The Project is split across several notebooks. Please open and run all cells of the notebooks in this order:
 
-* Replicate the findings in the guardian article. proposing a disposition to different styles of goverment.
- * Try to find some other explanations for them based on the data (e.g., respondents’ age, employment, income etc.). 
-* The datasets from 2006 and 2010 are also available and so changes over time could also be looked at.
-
-## For additional resources on the dataset
-
-https://drive.google.com/drive/folders/1QXw6BfepCWCoMP3isjvrZ1U9edzRgcJ0?usp=sharing
+### PRIMARY
+1. Notebook 1 - Replication and Life Satisfaction Multiple Regression Models.ipynb
+2. classification_part1.ipynb - kNN classification using manual selection of features
+3. classification_part2.ipynb - kNN classification using automated selection of features
+### SECONDARY
+4. features_explored_age.ipynb and features_explored_peoples_height.ipynb - miscellaneous findings, that came from when exploring features for classification. 
