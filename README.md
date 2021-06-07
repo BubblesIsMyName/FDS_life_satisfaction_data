@@ -5,10 +5,14 @@ Project Background: The European Bank for Reconstruction and Development (EBRD) 
 Our project aims to replicate part of their results and extend them in relation to life satisfaction and political views.
 
 The Project is split across several notebooks. Please open and run all cells of the notebooks in this order:
+NB!:
+* Notebooks can be executed independenlty.
+* classification notebooks have some of the functions used in multiple notebooks in useful_fun.py file.
+
 
 ### PRIMARY
-1. Notebook 1 - Replication and Life Satisfaction Multiple Regression Models.ipynb
-2. classification_part1.ipynb - kNN classification using manual selection of features
-3. classification_part2.ipynb - kNN classification using automated selection of features
+1. Replication_and_Life_Satisfaction_Multiple_Regression_Models.ipynb - Replication of the original article results and life satisfaction regression.
+2. classification_part1.ipynb - kNN classification using manual selection of features.
+3. classification_part2.ipynb - kNN classification using automated selection of features.
 ### SECONDARY
-4. features_explored_age.ipynb and features_explored_peoples_height.ipynb - miscellaneous findings, that came from when exploring features for classification. 
+4. features_explored_age.ipynb and features_explored_peoples_height.ipynb - miscellaneous findings, that came from when exploring features for manual classification. 
