@@ -1,11 +1,8 @@
 import numpy as np
 import pandas as pd
 
-# EXAMPLE 
-# Using list comprehension - https://stackoverflow.com/questions/52705809/index-of-substring-in-a-python-list-of-strings
-# Numpy indexing documentation - https://numpy.org/devdocs/reference/arrays.indexing.html
-# l = ['abc','day','ghi']
-# [e.find('a') for e in l]
+# THIS FILE CONTAINS FUNCTIONS AND DEFINITIONS THAT WERE USED ACCROSS MULTIPLE NOTEBOOKS 
+# (Primarily in the classification task)
 
 def findColumn(containsString,dataFrame):
     """
@@ -172,14 +169,6 @@ def calc_mean_percentage(countries, df, measure, exclusions, criteria):
     
     return mean_percentage
 
-# def exclude_values(df, measure, exclusions):
-#     # Clean the dataframe by removing rows with the excluded values in the measure column.
-#     df_overall = df.copy()
-#     for i in np.arange(len(exclusions)):
-#         indices = df[df[measure] == exclusions[i]].index
-#         df_overall = df_overall.drop(indices)
-#     return df_overall
-
 
 def exclude_values(df, measure, exclusions):
     # Clean the dataframe by removing rows with the excluded values in the measure column.
@@ -263,23 +252,10 @@ def closest(training, example, k, output):
     return dist_df.sort_values('Distance').head(k)
 
 
-# def predict_nn(example, training, k, output):
-#     """Return average of the price across the 5 nearest neighbors.
-#     """
-#     k_nearest = closest(training, example, k, output)
-
-#     print(k_nearest)
-#     result = np.median(k_nearest[output])
-
-#     return result
-
-
 def predict_nn(example, training, k, output):
     """Return average of the price across the 5 nearest neighbors.
     """
     k_nearest = closest(training, example, k, output)
-
-    # result = np.median(k_nearest[output])
 
     result = k_nearest[output].value_counts().index[0]
 
@@ -358,3 +334,17 @@ def balance_df(dataframe,Output,bootstrap = False):
             df = df.sample(frac=2,replace=True).iloc[:max_len,:]
             balancedDf = pd.concat([balancedDf,df])
     return balancedDf
+
+
+def column_values(df):
+    """
+    Function prints the unique column values in each column given a df.
+    """
+    for col in df.columns:
+        # unique = np.unique(lits_2016_selected[col])
+        unique = df[col].unique()
+        # for i in 
+        if len(unique) < 14:
+            print('{}\n {}, Members: ({})'.format(col,len(unique),unique))
+        else:
+            print('{}\n {}, Members: (mora than 10)'.format(col,len(unique)))
