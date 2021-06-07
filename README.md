@@ -5,7 +5,6 @@ Project Background: The European Bank for Reconstruction and Development (EBRD) 
 Our project aims to replicate part of their results and extend them in relation to life satisfaction and political views.
 
 The Project is split across several notebooks. Please open and run all cells of the notebooks in this order:
-NB!:
 * Notebooks can be executed independenlty.
 * classification notebooks have some of the functions used in multiple notebooks in useful_fun.py file.
 
